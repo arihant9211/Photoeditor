@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Topper Press — Print Sheet Maker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#"><span class="brand-mark">✦</span> topper<span>press</span></a>
+      <div class="topbar-right"><span class="autosaved"><i></i> Ready to print</span><button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode"><span class="theme-sun">☼</span><span class="theme-moon">☾</span></button><button class="help-btn" title="Help">?</button></div>
+    </header>
+
+    <main>
+      <section class="intro">
+        <div>
+          <p class="eyebrow">A4 CAKE TOPPER LAYOUT</p>
+          <h1>Make a print sheet<br /><em>in a few clicks.</em></h1>
+        </div>
+        <p class="intro-copy">Upload a topper image, set its finished size, and download an A4 sheet ready for printing.</p>
+      </section>
+
+      <section class="workspace">
+        <aside class="controls">
+          <div class="step active">
+            <span class="step-no">01</span>
+            <div><strong>Artwork</strong><small>Upload &amp; cut out</small></div>
+          </div>
+
+          <label class="upload-box" id="uploadBox" for="fileInput">
+            <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" />
+            <span class="upload-icon">↑</span>
+            <strong>Drop image here</strong>
+            <small>or browse files · PNG, JPG, WEBP</small>
+          </label>
+          <div id="fileInfo" class="file-info hidden"><span class="mini-check">✓</span><span id="fileName">topper.png</span><button id="clearFile" aria-label="Remove image">×</button></div>
+          <label class="remove-bg" id="removeBgControl">
+            <input id="removeBg" type="checkbox" disabled />
+            <span class="switch"><i></i></span>
+            <span><strong>Remove background</strong><small id="bgStatus">Off — keep original photo</small></span>
+          </label>
+          <p class="tiny-note">You can switch this off anytime to restore the original image.</p>
+
+          <div class="shape-section">
+            <span class="field-title">Crop shape</span>
+            <div class="shape-options" id="shapeOptions">
+              <button class="shape-btn selected" data-shape="original"><i class="shape-icon original"></i>Original</button>
+              <button class="shape-btn" data-shape="circle"><i class="shape-icon circle"></i>Circle</button>
+              <button class="shape-btn" data-shape="oval"><i class="shape-icon oval"></i>Oval</button>
+              <button class="shape-btn" data-shape="rounded"><i class="shape-icon rounded"></i>Rounded</button>
+              <button class="shape-btn" data-shape="square"><i class="shape-icon square"></i>Square</button>
+            </div>
+          </div>
+          <button id="openCrop" class="open-crop" type="button" disabled><span>✥</span><span><strong>Adjust crop</strong><small>Drag the image and resize the crop frame</small></span><b>›</b></button>
+          <button id="addToSheet" class="add-to-sheet" type="button" disabled><span>＋</span> Add this topper to sheet</button>
+          <div class="sheet-items-wrap"><div class="items-head"><span class="field-title">Photos on this sheet</span><span id="itemCount">0 items</span></div><div id="sheetItems" class="sheet-items"><span class="items-empty">Add a prepared photo to build your sheet.</span></div></div>
+
+          <div class="section-rule"></div>
+          <div class="step">
+            <span class="step-no">02</span>
+            <div><strong>Finished size</strong><small>One topper</small></div>
+          </div>
+          <div class="unit-row"><span class="field-title">Measurement unit</span><select id="unitSelect" aria-label="Measurement unit"><option value="cm">Centimetres (cm)</option><option value="mm">Millimetres (mm)</option><option value="in">Inches (in)</option></select></div>
+          <div class="measure-row">
+            <label>Width <div class="input-wrap"><input id="widthInput" type="number" min="0.1" max="400" step="0.1" value="10" /><span class="unit-label">cm</span></div></label>
+            <button id="swapSize" class="swap" title="Swap width and height">↔</button>
+            <label>Height <div class="input-wrap"><input id="heightInput" type="number" min="0.1" max="400" step="0.1" value="10" /><span class="unit-label">cm</span></div></label>
+          </div>
+          <label class="lock-row"><input id="lockRatio" type="checkbox" checked /><span class="fake-check">✓</span> Keep image ratio</label>
+
+          <div class="section-rule"></div>
+          <div class="step">
+            <span class="step-no">03</span>
+            <div><strong>Sheet layout</strong><small>Arrange copies</small></div>
+          </div>
+          <div class="layout-row">
+            <label>Copies <div class="copy-control"><button id="minusCopy">−</button><input id="copiesInput" type="number" min="1" max="99" value="6" /><button id="plusCopy">+</button></div></label>
+            <label>Gap <div class="input-wrap"><input id="gapInput" type="number" min="0" max="40" step="0.1" value="0.5" /><span class="unit-label">cm</span></div></label>
+          </div>
+          <div class="orientation"><button class="orientation-btn selected" data-orientation="portrait"><span>▯</span> Portrait</button><button class="orientation-btn" data-orientation="landscape"><span>▭</span> Landscape</button></div>
+        </aside>
+
+        <section class="preview-panel">
+          <div class="preview-head"><div><p class="eyebrow">LIVE PREVIEW</p><h2>Your A4 sheet</h2></div><span id="sheetStats" class="sheet-stats">6 copies · 10 × 10 cm</span></div>
+          <div class="stage">
+            <div class="paper portrait" id="paper">
+              <div class="paper-label">A4 · 300 DPI</div>
+              <div id="sheetGrid" class="sheet-grid"></div>
+              <div id="emptySheet" class="empty-sheet">
+                <div class="empty-star">✦</div><strong>Your layout will appear here</strong><span>Upload artwork to begin</span>
+              </div>
+            </div>
+          </div>
+          <div class="preview-footer"><span><b id="fitCount">0</b> fit on this sheet</span><span id="actualSize">Each: 10 × 10 cm</span></div>
+        </section>
+      </section>
+
+      <section class="export-bar">
+        <div class="export-summary"><span class="summary-icon">✓</span><div><strong id="exportTitle">Your sheet is ready when you are</strong><small id="exportSub">Upload an image to enable your print file.</small></div></div>
+        <button id="downloadBtn" class="download-btn" disabled>Download print sheet <span>↓</span></button>
+      </section>
+    </main>
+
+    <template id="topperTemplate"><div class="topper-slot"><div class="topper-art"></div><span class="cut-line"></span></div></template>
+    <div id="cropModal" class="crop-modal" hidden role="dialog" aria-modal="true" aria-labelledby="cropTitle">
+      <div class="crop-dialog">
+        <div class="crop-dialog-head"><div><p class="eyebrow">CROP ARTWORK</p><h2 id="cropTitle">Position your topper</h2></div><button id="closeCrop" class="modal-close" type="button" aria-label="Close crop editor">×</button></div>
+        <p class="crop-help">Drag the photo to reposition it. Pull any corner of the frame to zoom in or out.</p>
+        <div class="crop-stage-wrap"><div id="cropViewport" class="crop-viewport"><span class="crop-handle handle-tl" data-handle></span><span class="crop-handle handle-tr" data-handle></span><span class="crop-handle handle-br" data-handle></span><span class="crop-handle handle-bl" data-handle></span><span class="crop-gridline line-v"></span><span class="crop-gridline line-h"></span></div></div>
+        <div class="crop-dialog-actions"><button id="resetCrop" class="text-btn" type="button">Reset</button><div><button id="cancelCrop" class="secondary-btn" type="button">Cancel</button><button id="applyCrop" class="primary-btn" type="button">Use this crop</button></div></div>
+      </div>
+    </div>
+    <div id="toast" class="toast">Background removed</div>
+    <script src="app.js"></script>
+  </body>
+</html>
